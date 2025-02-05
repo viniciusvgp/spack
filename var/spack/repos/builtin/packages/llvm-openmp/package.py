@@ -91,10 +91,7 @@ class LlvmOpenmp(CMakePackage):
         define = self.define
         cmake_args = []
 
-        if "+libomptarget" in spec:
-            cmake_args.append(define("OPENMP_ENABLE_LIBOMPTARGET", True))
-        else:
-            cmake_args.append(define("OPENMP_ENABLE_LIBOMPTARGET", False))
+        self.define_from_variant("OPENMP_ENABLE_LIBOMPTARGET", "libomptarget")
 
         # Add optional support for both Intel and gcc compilers
         if spec.satisfies("+multicompat"):
