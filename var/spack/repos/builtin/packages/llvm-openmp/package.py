@@ -25,6 +25,11 @@ class LlvmOpenmp(CMakePackage):
 
     license("Apache-2.0")
 
+    version("19.1.7", sha256="bd7e6901ab086fd268750363017935fd4a717c153dad3c2aab86cb0140d9e3fe")
+    resource_for_ver(
+        "19.1.7", sha256="11c5a28f90053b0c43d0dec3d0ad579347fc277199c005206b963c19aae514e3"
+    )
+
     version("18.1.0", sha256="ef1cef885d463e4becf5e132a9175a540c6f4487334c0e86274a374ce7d0a092")
     resource_for_ver(
         "18.1.0", sha256="d367bf77a3707805168b0a7a7657c8571207fcae29c5890312642ee42b76c967"
