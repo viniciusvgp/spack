@@ -88,7 +88,6 @@ class LlvmOpenmp(CMakePackage):
 
     def cmake_args(self):
         spec = self.spec
-        define = self.define
         cmake_args = []
 
         self.define_from_variant("OPENMP_ENABLE_LIBOMPTARGET", "libomptarget")
