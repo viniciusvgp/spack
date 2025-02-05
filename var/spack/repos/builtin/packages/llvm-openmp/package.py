@@ -47,11 +47,18 @@ class LlvmOpenmp(CMakePackage):
     depends_on("fortran", type="build")  # generated
 
     variant("multicompat", default=True, description="Support the GNU OpenMP runtime interface.")
+    variant(
+        "libomptarget",
+        default=False,
+        description="Build the OpenMP offloading library",
+        when="@14:",
+    )
 
     depends_on("cmake@3.13.4:", when="@12:", type="build")
     depends_on("cmake@2.8:", type="build")
     depends_on("py-lit", type="test")
     depends_on("py-filecheck", type="test")
+    depends_on("libllvm", when="@14:+libomptarget")
 
     @property
     def root_cmakelists_dir(self):
@@ -75,9 +82,17 @@ class LlvmOpenmp(CMakePackage):
             os.rename(cmake_mod_dir, os.path.join(self.stage.path, "cmake"))
 
     def cmake_args(self):
+        spec = self.spec
+        define = self.define
         cmake_args = []
+
+        if "+libomptarget" in spec:
+            cmake_args.append(define("OPENMP_ENABLE_LIBOMPTARGET", True))
+        else:
+            cmake_args.append(define("OPENMP_ENABLE_LIBOMPTARGET", False))
+
         # Add optional support for both Intel and gcc compilers
-        if self.spec.satisfies("+multicompat"):
+        if spec.satisfies("+multicompat"):
             cmake_args.append("-DKMP_GOMP_COMPAT=1")
         return cmake_args
 
